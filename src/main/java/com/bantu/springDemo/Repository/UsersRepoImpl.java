@@ -13,11 +13,11 @@ public class UsersRepoImpl {
     @Autowired
     public MongoTemplate mongoTemplate;
 
-    public List<Users> getUsersForSA(){
-        Query query=new Query();
-        query.addCriteria(Criteria.where("username").is("sai"));
-        List<Users> user=mongoTemplate.find(query,Users.class);
-        return user;
+    public List<Users> getUserForSA() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("email").regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,6}$"));
+        query.addCriteria(Criteria.where("sentimentAnalysis").is(true));
+        return mongoTemplate.find(query, Users.class);
     }
 
     public List<Users> getUsersWithEmailAndPassword(){

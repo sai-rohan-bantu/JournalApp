@@ -13,7 +13,7 @@ public class UserRepoTests {
 
     @Test
     public void testGetUserForSA(){
-        usersRepo.getUsersForSA();
+        usersRepo.getUserForSA();
     }
     @Test
     public void testGetUserForSAandEmail(){
