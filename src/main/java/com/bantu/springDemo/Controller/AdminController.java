@@ -1,5 +1,6 @@
 package com.bantu.springDemo.Controller;
 
+import com.bantu.springDemo.Cache.AppCache;
 import com.bantu.springDemo.Entity.Users;
 import com.bantu.springDemo.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class AdminController {
     @Autowired
     public UsersService usersService;
 
+    @Autowired
+    public AppCache appCache;
+
     @GetMapping("/get-users")
     public ResponseEntity<?> getAllUsers(){
         List<Users> allUsers=usersService.getUsers();
@@ -27,5 +31,10 @@ public class AdminController {
     @PostMapping("/create-admin-user")
     public void createAdminUser(@RequestBody Users user){
         usersService.saveAdmin(user);
+    }
+
+    @GetMapping("/clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
     }
 }
