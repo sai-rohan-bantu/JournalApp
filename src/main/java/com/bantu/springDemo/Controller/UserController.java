@@ -1,8 +1,10 @@
 package com.bantu.springDemo.Controller;
 
+import com.bantu.springDemo.ApiResponse.WeatherResponse;
 import com.bantu.springDemo.Entity.Users;
 import com.bantu.springDemo.Repository.UsersRepo;
 import com.bantu.springDemo.Services.UsersService;
+import com.bantu.springDemo.Services.WeatherService;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserController {
     @Autowired
     public UsersRepo usersRepo;
 
+    @Autowired
+    public WeatherService weatherService;
+
 
     @PutMapping()
     public ResponseEntity<?> updateUser(@RequestBody Users user){
@@ -42,5 +47,16 @@ public class UserController {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         usersRepo.deleteByUsername(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> greetings(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse response= weatherService.getWeather("Mumbai");
+        String greeting="";
+        if(response!=null){
+            greeting=" , weather feels like "+response.getCurrent().getFeelslike();
+        }
+        return new ResponseEntity<>("Hi " +authentication.getName() + greeting,HttpStatus.OK);
     }
 }
